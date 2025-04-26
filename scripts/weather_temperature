@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Check internet connection
+ping -c 1 wttr.in >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    # Get temperature
+    temperature=$(curl -s -m 2 wttr.in/Tangerang?format=%t)
+    if [ -z "$temperature" ]; then
+        temperature="not connected"
+    else
+        temperature=$(echo "$temperature" | cut -c 2-)
+    fi
+    
+    # Get weather condition
+    weather=$(curl -s -m 2 wttr.in/Tangerang?format=%C)
+    if [ -z "$weather" ]; then
+        weather="not connected"
+    fi
+else
+    temperature="Not Connected"
+    weather="Not Connected"
+fi
+
+echo -e "The Temperature in Kota Tangerang \narea is currently $temperature and the current \nweather is $weather."
+
